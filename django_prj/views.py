@@ -19,3 +19,26 @@ def burger_list(request):
     return render(request=request,
                   template_name="burger_list.html",
                   context=context)
+
+def burger_search(request):
+    print("request.GET : ", request.GET) # requst.GET 으로 전달된 데이터 출력
+    keyword = request.GET.get("keyword") # 검색한 데이터 변수화
+    print("keyword : ", keyword)
+
+    if keyword is not None:
+        burgers = Burger.objects.filter(name__contains=keyword)
+
+    else:
+        burgers = Burger.objects.none()
+
+    # keyword 변수의 값과 동일한 오브젝트 필터
+    # burgers = Burger.objects.filter(name__contains=keyword)
+    print("burgers : ", burgers)
+
+    context = {
+        "burgers" : burgers,
+    }
+
+    return render(request=request,
+                  template_name="burger_search.html",
+                  context=context)
